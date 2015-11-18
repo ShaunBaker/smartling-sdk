@@ -190,6 +190,10 @@ SmartlingSdk.prototype.upload = function (filePath, fileUri, fileType, options) 
   //create a defered object to return
   var deferred = Q.defer();
 
+  var smParams = options.smartling || null
+
+  delete options.smartling
+
   //setup default request params
   var smartlingParams = {
     fileUri: fileUri,
