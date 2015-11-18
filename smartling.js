@@ -217,6 +217,9 @@ SmartlingSdk.prototype.upload = function (filePath, fileUri, fileType, options) 
       }, getStandardSmartlingRequestHandler(deferred));
 
       var form = req.form();
+      Object.keys(smParams).forEach(function (key) {
+        form.append('smartling.' + key, smParams[key])
+      })
       form.append('file', fs.createReadStream(filePath));
     }
   });
