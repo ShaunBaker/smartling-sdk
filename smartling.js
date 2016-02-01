@@ -206,7 +206,7 @@ SmartlingSdk.prototype.upload = function (filePath, fileUri, fileType, options) 
   }
 
   //extend the request params with any options passed in by user
-  _.extend(smartlingParams, options);
+  // _.extend(smartlingParams, options);
 
   //assemble the request URL
   var requestUrl = this.getSmartlingRequestPath(SmartlingSdk.OPERATIONS.UPLOAD, smartlingParams);
