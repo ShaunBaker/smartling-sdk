@@ -197,15 +197,25 @@ SmartlingSdk.prototype.upload = function (filePath, fileUri, fileType, options) 
   //setup default request params
   var smartlingParams = {
     fileUri: fileUri,
-    fileType: fileType,
-    approved: false
+    fileType: fileType
   };
 
+  if (options.approved) {
+    smartlingParams.approved = true
+  }
+  
   //extend the request params with any options passed in by user
   _.extend(smartlingParams, options);
 
   //assemble the request URL
   var requestUrl = this.getSmartlingRequestPath(SmartlingSdk.OPERATIONS.UPLOAD, smartlingParams);
+
+  if (options.localesToApprove) {
+    var str = options.localesToApprove.join(',')
+    options.localesToApprove.forEach((locale) => {
+      requestUrl = requestUrl + `&localesToApprove=${locale}`
+    })
+  }
 
   fs.stat(filePath, function (err, stat) {
     if (err) {
@@ -218,7 +228,9 @@ SmartlingSdk.prototype.upload = function (filePath, fileUri, fileType, options) 
 
       var form = req.form();
       Object.keys(smParams).forEach(function (key) {
-        form.append('smartling.' + key, smParams[key])
+        if (key !== 'localesToApprove') {
+          form.append('smartling.' + key, smParams[key])
+        }
       })
       form.append('file', fs.createReadStream(filePath));
     }
