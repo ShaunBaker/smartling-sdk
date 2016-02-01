@@ -82,6 +82,7 @@ function getStandardSmartlingRequestHandler(deferred) {
       }
       handleSmartlingResponse(data, deferred);
     } else {
+      console.log(error, body)
       var errorObject = {
         message: "An unknown error occurred"
       };
@@ -203,18 +204,20 @@ SmartlingSdk.prototype.upload = function (filePath, fileUri, fileType, options) 
   if (options.approved) {
     smartlingParams.approved = true
   }
-  
+
   //extend the request params with any options passed in by user
   _.extend(smartlingParams, options);
 
   //assemble the request URL
   var requestUrl = this.getSmartlingRequestPath(SmartlingSdk.OPERATIONS.UPLOAD, smartlingParams);
 
-  if (options.localesToApprove) {
+  if (options.localesToApprove && options.localesToApprove.length > 1) {
     var str = options.localesToApprove.join(',')
     options.localesToApprove.forEach((locale) => {
       requestUrl = requestUrl + `&localesToApprove=${locale}`
     })
+  } else {
+    requestUrl = requestUrl + `&localesToApprove=${options.localesToApprove[0]}`
   }
 
   fs.stat(filePath, function (err, stat) {
