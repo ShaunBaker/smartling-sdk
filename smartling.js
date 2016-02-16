@@ -205,6 +205,10 @@ SmartlingSdk.prototype.upload = function (filePath, fileUri, fileType, options) 
     smartlingParams.approved = true
   }
 
+  if (options.callbackUrl) {
+    smartlingParams.callbackUrl = options.callbackUrl
+  }
+
   //extend the request params with any options passed in by user
   // _.extend(smartlingParams, options);
 
